@@ -433,7 +433,7 @@ def plot_outlier_boxplots_by_class(df, features=None, output_path="results/figur
         
         if col == "Area":
             ax.annotate("100% of BOMBAY beans\nfall above Global IQR!\n(Naturally large, not errors)",
-                        xy=(6, 173466), xytext=(3.5, 210000),
+                        xy=(6, 173485.06), xytext=(3.5, 210000),
                         arrowprops=dict(facecolor="red", shrink=0.08, width=1.5, headwidth=6),
                         fontsize=9, fontweight="bold", color="crimson",
                         bbox=dict(boxstyle="round,pad=0.3", fc="#fff3cd", ec="#ffeeba", lw=1))
@@ -685,10 +685,15 @@ def run_pca_analysis(df, features=None, target_col=TARGET_COL,
 
 def build_and_save_metrics_summary(raw_audit, clean_audit, num_summary, class_dist,
                                    high_corr_df, vif_df, rank_df, selected_subset,
-                                   pca_summary, pca_thresholds,
+                                   pca_summary, pca_thresholds, class_means=None,
                                    output_path="results/tables/metrics_summary.json"):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
+    class_area_means_dict = {}
+    if class_means is not None:
+        for _, row in class_means.iterrows():
+            class_area_means_dict[row["Class"]] = round(float(row["Area"]), 2)
+            
     summary = {
         "metadata": {
             "dataset_name": "Dry Bean Dataset",
@@ -710,6 +715,7 @@ def build_and_save_metrics_summary(raw_audit, clean_audit, num_summary, class_di
             "duplicate_class_breakdown": raw_audit["duplicate_class_breakdown"],
             "cleaned_instances": clean_audit["total_records"],
             "domain_checks_all_valid": True,
+            "area_upper_threshold": clean_audit["area_upper_threshold"],
             "bombay_total_instances": raw_audit["bombay_total"],
             "bombay_area_outliers_count": raw_audit["bombay_area_outliers"],
             "bombay_area_outliers_pct": round(raw_audit["bombay_outlier_fraction"] * 100, 2),
@@ -720,6 +726,7 @@ def build_and_save_metrics_summary(raw_audit, clean_audit, num_summary, class_di
             "shapefactor4_variance": clean_audit["shapefactor4_variance"]
         },
         "class_distribution": class_dist.to_dict(orient="records"),
+        "class_area_means": class_area_means_dict,
         "scaling_disparity": {
             "raw_max_range": float(raw_audit["audit_table"]["Range"].max()),
             "raw_min_range": float(raw_audit["audit_table"]["Range"].min()),
@@ -833,7 +840,7 @@ def run_pipeline():
     build_and_save_metrics_summary(
         raw_audit, clean_audit, num_summary, class_dist,
         high_corr_df, vif_df, rank_df, selected_subset,
-        pca_summary, thresholds,
+        pca_summary, thresholds, class_means=class_means,
         output_path="results/tables/metrics_summary.json"
     )
     print("  Saved results/tables/metrics_summary.json")

@@ -29,6 +29,7 @@
         },
         "cleaned_instances": 13543,
         "domain_checks_all_valid": true,
+        "area_upper_threshold": 99031.25,
         "bombay_total_instances": 522,
         "bombay_area_outliers_count": 522,
         "bombay_area_outliers_pct": 100.0,
@@ -86,6 +87,15 @@
             "Ratio_to_Minority": 1.0
         }
     ],
+    "class_area_means": {
+        "BARBUNYA": 69804.13,
+        "BOMBAY": 173485.06,
+        "CALI": 75538.21,
+        "DERMASON": 32118.71,
+        "HOROZ": 53671.73,
+        "SEKER": 39881.3,
+        "SIRA": 44729.13
+    },
     "scaling_disparity": {
         "raw_max_range": 242577.0,
         "raw_min_range": 0.0031008029464183904,
