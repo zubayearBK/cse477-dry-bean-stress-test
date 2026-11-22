@@ -135,7 +135,7 @@ In modern automated agriculture, high-throughput machine vision systems are incr
 
 Standard academic investigations prioritize optimizing accuracy on pristine benchmarks, tacitly assuming that the training and operational test distributions remain clean and identical. This paradigm obscures a critical engineering question: \textit{Under what specific data-quality degradations do classical data mining algorithms fail, which methods fail gracefully, which collapse catastrophically, and why?}
 
-As **Group 10 (``The Data Mining Stress Test'')**, our research mandate departs from conventional accuracy chasing. We treat the benchmark UCI Dry Bean dataset~\citep{uci2020drybean,koklu2020multiclass} as a pristine scientific baseline ($100\%$ data quality) and systematically subject data mining pipelines to controlled, multi-dimensional data degradation. We formalize this inquiry around four primary Stress-Test Research Questions (SRQ1--SRQ4) alongside four core Data Mining Research Questions (RQ1--RQ4):
+As \textbf{Group 10 (``The Data Mining Stress Test'')}, our research mandate departs from conventional accuracy chasing. We treat the benchmark UCI Dry Bean dataset~\citep{uci2020drybean,koklu2020multiclass} as a pristine scientific baseline ($100\%$ data quality) and systematically subject data mining pipelines to controlled, multi-dimensional data degradation. We formalize this inquiry around four primary Stress-Test Research Questions (SRQ1--SRQ4) alongside four core Data Mining Research Questions (RQ1--RQ4):
 
 \subsection{Research Questions}
 \label{subsec:research_questions}
@@ -157,9 +157,9 @@ As **Group 10 (``The Data Mining Stress Test'')**, our research mandate departs 
 The primary contributions of this paper are summarized as follows:
 \begin{enumerate}[leftmargin=1.5em]
     \item \textbf{End-to-End Baseline Benchmark:} We establish a reproducible data mining baseline spanning distance metric analysis, unsupervised clustering ($k$-Means, Hierarchical Ward, DBSCAN), supervised classification (Decision Trees, Interpretable Rule Classifiers, Gaussian Naïve Bayes, $k$-NN), and discretized FP-Growth Class Association Rules.
-    \item \textbf{Quantitative Scale Distortion Proof:} We prove mathematically and empirically that raw Euclidean distance collapses into a one-dimensional pixel-count sort due to `Area` dominance, causing a $\Delta = -0.2498$ drop in nearest-neighbor class purity.
+    \item \textbf{Quantitative Scale Distortion Proof:} We prove mathematically and empirically that raw Euclidean distance collapses into a one-dimensional pixel-count sort due to \texttt{Area} dominance, causing a $\Delta = -0.2498$ drop in nearest-neighbor class purity.
     \item \textbf{Four Signature Robustness Curves:} We generate empirical degradation trajectories under Missingness, Outliers, Normalization Swaps, and Dimensionality Compression, mapping the exact breakdown thresholds of four distinct algorithmic paradigms.
-    \item \textbf{Five High-Impact Discoveries:} We document five rigorously grounded findings, including the 100\% `BOMBAY` outlier paradox, Naïve Bayes performance inversion under collinearity pruning, and Decision Tree outlier immunity.
+    \item \textbf{Five High-Impact Discoveries:} We document five rigorously grounded findings, including the 100\% \texttt{BOMBAY} outlier paradox, Naïve Bayes performance inversion under collinearity pruning, and Decision Tree outlier immunity.
 \end{enumerate}
 
 % ==============================================================================
@@ -175,20 +175,21 @@ The primary empirical foundation for this study is the UCI Dry Bean Dataset~\cit
     \small
     \caption{UCI Dry Bean Dataset Metadata Specification.}
     \label{tab:metadata}
-    \begin{tabularx}{\linewidth}{lX}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\linewidth}{@{} >{\bfseries}l X @{}}
         \toprule
-        \textbf{Property} & \textbf{Specification / Metadata Details} \\
+        Property & Specification / Metadata Details \\
         \midrule
-        \textbf{Dataset Name} & Dry Bean Dataset \\
-        \textbf{Primary DOI / URI} & \url{https://doi.org/10.24432/C50S4B} \\
-        \textbf{Primary Publication} & Koklu and Ozkan (2020), \textit{Computers and Electronics in Agriculture}~\citep{koklu2020multiclass} \\
-        \textbf{Application Domain} & Agricultural Computer Vision / High-Throughput Grain Inspection \\
-        \textbf{Data Object (1 Row)} & One individual segmented dry bean grain silhouette \\
-        \textbf{Raw Record Count ($N$)} & $13{,}611$ instances ($0$ missing values) \\
-        \textbf{Cleaned Record Count} & $13{,}543$ instances ($68$ exact duplicate rows dropped) \\
-        \textbf{Dimensionality ($d$)} & $17$ total attributes ($16$ continuous numerical features + $1$ nominal target class) \\
-        \textbf{Target Classes ($C = 7$)} & \texttt{SEKER}, \texttt{BARBUNYA}, \texttt{BOMBAY}, \texttt{CALI}, \texttt{DERMASON}, \texttt{HOROZ}, \texttt{SIRA} \\
-        \textbf{Data Acquisition} & Computer vision segmentation under controlled laboratory lighting \\
+        Dataset Name & Dry Bean Dataset \\
+        Primary DOI / URI & \url{https://doi.org/10.24432/C50S4B} \\
+        Primary Publication & Koklu and Ozkan (2020), \textit{Computers and Electronics in Agriculture}~\citep{koklu2020multiclass} \\
+        Application Domain & Agricultural Computer Vision / High-Throughput Grain Inspection \\
+        Data Object (1 Row) & One individual segmented dry bean grain silhouette \\
+        Raw Record Count ($N$) & $13{,}611$ instances ($0$ missing values) \\
+        Cleaned Record Count & $13{,}543$ instances ($68$ exact duplicate rows dropped) \\
+        Dimensionality ($d$) & $17$ total attributes ($16$ continuous numerical features + $1$ nominal target class) \\
+        Target Classes ($C = 7$) & \texttt{SEKER}, \texttt{BARBUNYA}, \texttt{BOMBAY}, \texttt{CALI}, \texttt{DERMASON}, \texttt{HOROZ}, \texttt{SIRA} \\
+        Data Acquisition & Computer vision segmentation under controlled laboratory lighting \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -203,26 +204,27 @@ The 16 predictive features capture both absolute geometric dimensions and scale-
     \footnotesize
     \caption{Comprehensive 17-Attribute Morphological Taxonomy and Mathematical Definitions.}
     \label{tab:attributes}
-    \begin{tabularx}{\linewidth}{ccllp{4.2cm}X}
+    \setlength{\tabcolsep}{3.5pt}
+    \begin{tabularx}{\linewidth}{@{} c l c c >{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}X @{}}
         \toprule
         \textbf{\#} & \textbf{Attribute} & \textbf{Symbol} & \textbf{Type} & \textbf{Mathematical Definition} & \textbf{Physical Role \& Collinearity} \\
         \midrule
-        1 & \texttt{Area} & $A$ & Ratio (Discrete) & Number of pixels inside boundary & Core size; collinear with $C, E_d, P$ \\
-        2 & \texttt{Perimeter} & $P$ & Ratio (Continuous) & Circumference pixel length & Core size metric; scale $\sim 10^3$ \\
-        3 & \texttt{MajorAxisLength} & $L$ & Ratio (Continuous) & Longest axis across ellipse & Primary elongation dimension \\
-        4 & \texttt{MinorAxisLength} & $l$ & Ratio (Continuous) & Shortest axis perpendicular to $L$ & Grain width dimension \\
-        5 & \texttt{AspectRation} & $K$ & Ratio (Continuous) & $K = L / l$ & Aspect ratio / elongation index \\
-        6 & \texttt{Eccentricity} & $E_c$ & Ratio (Continuous) & $E_c = \sqrt{1 - (l/L)^2}$ & Non-linear elongation index \\
-        7 & \texttt{ConvexArea} & $C$ & Ratio (Discrete) & Pixels in convex hull polygon & Nearly identical to Area ($r > 0.999$) \\
-        8 & \texttt{EquivDiameter} & $E_d$ & Ratio (Continuous) & $E_d = \sqrt{4A / \pi}$ & Equivalent circle diameter \\
-        9 & \texttt{Extent} & $E_x$ & Ratio (Continuous) & $E_x = A / (W_{bb} \cdot H_{bb})$ & Bounding-box fill efficiency \\
-        10 & \texttt{Solidity} & $S$ & Ratio (Continuous) & $S = A / C$ & Boundary concavity ratio \\
-        11 & \texttt{roundness} & $R$ & Ratio (Continuous) & $R = 4\pi A / P^2$ & Scale-invariant circularity metric \\
-        12 & \texttt{Compactness} & $CO$ & Ratio (Continuous) & $CO = E_d / L$ & Circular compactness ratio \\
-        13 & \texttt{ShapeFactor1} & $SF_1$ & Ratio (Continuous) & $SF_1 = L / A$ & Inverse size-elongation ratio ($\sim 10^{-3}$) \\
-        14 & \texttt{ShapeFactor2} & $SF_2$ & Ratio (Continuous) & $SF_2 = l / A$ & Inverse size-width ratio ($\sim 10^{-3}$) \\
-        15 & \texttt{ShapeFactor3} & $SF_3$ & Ratio (Continuous) & $SF_3 = A / (\frac{\pi}{4} L^2) = CO^2$ & Collinear with Compactness \\
-        16 & \texttt{ShapeFactor4} & $SF_4$ & Ratio (Continuous) & $SF_4 = A / (\frac{\pi}{4} L \cdot l)$ & Convex ellipse ratio ($\approx 0.99$) \\
+        1 & \texttt{Area} & $A$ & Discrete & Pixel count inside boundary & Core size; collinear with $C, E_d, P$ \\
+        2 & \texttt{Perimeter} & $P$ & Cont. & Circumference pixel length & Core size metric; scale $\sim 10^3$ \\
+        3 & \texttt{MajorAxisLength} & $L$ & Cont. & Longest ellipse axis & Primary elongation dimension \\
+        4 & \texttt{MinorAxisLength} & $l$ & Cont. & Shortest axis perpendicular to $L$ & Grain width dimension \\
+        5 & \texttt{AspectRation} & $K$ & Cont. & $K = L / l$ & Aspect ratio / elongation index \\
+        6 & \texttt{Eccentricity} & $E_c$ & Cont. & $E_c = \sqrt{1 - (l/L)^2}$ & Non-linear elongation index \\
+        7 & \texttt{ConvexArea} & $C$ & Discrete & Pixels in convex hull polygon & Nearly identical to Area ($r > 0.999$) \\
+        8 & \texttt{EquivDiameter} & $E_d$ & Cont. & $E_d = \sqrt{4A / \pi}$ & Equivalent circle diameter \\
+        9 & \texttt{Extent} & $E_x$ & Cont. & $E_x = A / (W_{bb} \cdot H_{bb})$ & Bounding-box fill efficiency \\
+        10 & \texttt{Solidity} & $S$ & Cont. & $S = A / C$ & Boundary concavity ratio \\
+        11 & \texttt{roundness} & $R$ & Cont. & $R = 4\pi A / P^2$ & Scale-invariant circularity metric \\
+        12 & \texttt{Compactness} & $CO$ & Cont. & $CO = E_d / L$ & Circular compactness ratio \\
+        13 & \texttt{ShapeFactor1} & $SF_1$ & Cont. & $SF_1 = L / A$ & Inverse size-elongation ($\sim 10^{-3}$) \\
+        14 & \texttt{ShapeFactor2} & $SF_2$ & Cont. & $SF_2 = l / A$ & Inverse size-width ($\sim 10^{-3}$) \\
+        15 & \texttt{ShapeFactor3} & $SF_3$ & Cont. & $SF_3 = A / (\frac{\pi}{4} L^2) = CO^2$ & Collinear with Compactness \\
+        16 & \texttt{ShapeFactor4} & $SF_4$ & Cont. & $SF_4 = A / (\frac{\pi}{4} L \cdot l)$ & Convex ellipse ratio ($\approx 0.99$) \\
         17 & \texttt{Class} & $y$ & Nominal & Categorical label ($7$ classes) & Supervised ground truth; excluded in clustering \\
         \bottomrule
     \end{tabularx}
@@ -238,21 +240,22 @@ The dataset encompasses seven commercial dry bean cultivars with marked class im
     \small
     \caption{Distribution of Dry Bean Cultivars in the Deduplicated Dataset ($N = 13{,}543$).}
     \label{tab:class_dist}
-    \begin{tabular}{lrrcl}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\linewidth}{@{} l r r l X @{}}
         \toprule
-        \textbf{Cultivar Class} & \textbf{Count ($n$)} & \textbf{Percentage (\%)} & \textbf{Role in Pipeline} & \textbf{Morphological Archetype} \\
+        \textbf{Cultivar Class} & \textbf{Count ($n$)} & \textbf{Percentage} & \textbf{Role in Pipeline} & \textbf{Morphological Archetype} \\
         \midrule
         \texttt{DERMASON} & $3{,}546$ & $26.18\%$ & Majority Class & Small, rounded-oval grain \\
         \texttt{SIRA} & $2{,}636$ & $19.46\%$ & Majority Class & Medium-small oval grain \\
         \texttt{SEKER} & $2{,}027$ & $14.97\%$ & Intermediate & Highly spherical, compact grain \\
-        \texttt{HOROZ} & $1{,}928$ & $14.24\%$ & Intermediate & Long, slender cylindrical grain \\
+        \texttt{HOROZ} & $1{,}860$ & $13.73\%$ & Intermediate & Long, slender cylindrical grain \\
         \texttt{CALI} & $1{,}630$ & $12.04\%$ & Intermediate & Large, elongated kidney grain \\
         \texttt{BARBUNYA} & $1{,}322$ & $9.76\%$ & Intermediate & Large, broad speckled grain \\
         \texttt{BOMBAY} & $522$ & $3.85\%$ & Minority Class & Giant, massive white bean \\
         \midrule
         \textbf{Total Cleaned} & $\mathbf{13{,}543}$ & $\mathbf{100.00\%}$ & --- & Imbalance Ratio: $6.79:1$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 The dominant cultivar \texttt{DERMASON} ($3{,}546$ grains) outnumbers the minority cultivar \texttt{BOMBAY} ($522$ grains) by a ratio of $6.79:1$. This structural skew necessitates evaluating models using Macro-averaged F1-scores rather than raw overall accuracy, which would heavily disguise minority misclassifications. Figure~\ref{fig:class_dist} visualizes the class prevalence distribution.
@@ -282,7 +285,8 @@ Table~\ref{tab:data_quality} summarizes the results of the six-dimension data qu
     \small
     \caption{Six-Dimension Data Quality Audit and Resolution Actions.}
     \label{tab:data_quality}
-    \begin{tabularx}{\linewidth}{lp{5.2cm}X}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}X @{}}
         \toprule
         \textbf{Quality Dimension} & \textbf{Empirical Audit Finding} & \textbf{Resolution / Pipeline Action} \\
         \midrule
@@ -304,9 +308,9 @@ A critical empirical discovery emerged during the outlier audit: exactly $522$ o
 \subsection{Feature Scaling Comparison and Disparity}
 \label{subsec:feature_scaling}
 
-The raw attributes display massive numerical scale disparity. `Area` ranges from $20{,}420$ to $254{,}616$ pixels (span $= 234{,}196$), whereas `ShapeFactor2` spans from $0.000564$ to $0.003666$ (span $= 0.003102$), generating a scale disparity ratio of:
+The raw attributes display massive numerical scale disparity. \texttt{Area} ranges from $20{,}420$ to $254{,}616$ pixels (span $= 234{,}196$), whereas \texttt{ShapeFactor2} spans from $0.000564$ to $0.003666$ (span $= 0.003102$), generating a scale disparity ratio of:
 \begin{equation}
-    \text{Disparity Ratio} = \frac{\text{Range}(\texttt{Area})}{\text{Range}(\texttt{ShapeFactor2})} = \frac{234{,}196}{0.003102} \approx 75{,}507{,}846.1 \approx 75.5\text{M}\times
+    \text{Disparity Ratio} = \frac{\text{Range}(\texttt{Area})}{\text{Range}(\texttt{ShapeFactor2})} = \frac{234{,}196}{0.003101} \approx 75{,}527{,}534.0 \approx 75.5\text{M}\times
 \end{equation}
 We benchmark four scaling transformations: Unscaled Raw, StandardScaler ($z = (x - \mu)/\sigma$), MinMaxScaler ($x_{\text{norm}} = (x - x_{\min})/(x_{\max} - x_{\min})$), and RobustScaler ($x_{\text{rob}} = (x - \tilde{x})/\text{IQR}$). Table~\ref{tab:scalers} records the statistical properties across scalers, and Figure~\ref{fig:scaling_comp} visualizes their impact.
 
@@ -315,27 +319,28 @@ We benchmark four scaling transformations: Unscaled Raw, StandardScaler ($z = (x
     \small
     \caption{Empirical Comparison of Scaling Transformations Across Representative Features.}
     \label{tab:scalers}
-    \begin{tabular}{llrrrrr}
+    \setlength{\tabcolsep}{4.5pt}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} llrrrrr @{}}
         \toprule
         \textbf{Scaler Strategy} & \textbf{Feature} & \textbf{Mean} & \textbf{Std Dev} & \textbf{Median} & \textbf{Min} & \textbf{Max} \\
         \midrule
-        \multirow{3}{*}{\textbf{Unscaled (Raw)}} & \texttt{Area} & $53{,}048.28$ & $29{,}329.99$ & $44{,}580.00$ & $20{,}420.00$ & $254{,}616.00$ \\
-        & \texttt{AspectRation} & $1.5832$ & $0.2467$ & $1.5511$ & $1.0249$ & $2.4306$ \\
+        \multirow{3}{*}{\textbf{Unscaled (Raw)}} & \texttt{Area} & $53{,}048.46$ & $29{,}392.44$ & $44{,}580.00$ & $20{,}420.00$ & $254{,}616.00$ \\
+        & \texttt{AspectRation} & $1.5811$ & $0.2452$ & $1.5499$ & $1.0249$ & $2.4303$ \\
         & \texttt{ShapeFactor2} & $0.0017$ & $0.0006$ & $0.0017$ & $0.0006$ & $0.0037$ \\
         \midrule
-        \multirow{3}{*}{\textbf{StandardScaler}} & \texttt{Area} & $0.0000$ & $1.0000$ & $-0.2887$ & $-1.1125$ & $6.8726$ \\
-        & \texttt{AspectRation} & $0.0000$ & $1.0000$ & $-0.1303$ & $-2.2634$ & $3.4352$ \\
-        & \texttt{ShapeFactor2} & $0.0000$ & $1.0000$ & $-0.0441$ & $-1.9427$ & $3.2982$ \\
+        \multirow{3}{*}{\textbf{StandardScaler}} & \texttt{Area} & $0.0000$ & $1.0000$ & $-0.2881$ & $-1.1101$ & $6.8581$ \\
+        & \texttt{AspectRation} & $0.0000$ & $1.0000$ & $-0.1273$ & $-2.2680$ & $3.4629$ \\
+        & \texttt{ShapeFactor2} & $0.0000$ & $1.0000$ & $-0.0316$ & $-1.9398$ & $3.2677$ \\
         \midrule
-        \multirow{3}{*}{\textbf{MinMaxScaler}} & \texttt{Area} & $0.1393$ & $0.1252$ & $0.1032$ & $0.0000$ & $1.0000$ \\
-        & \texttt{AspectRation} & $0.3972$ & $0.1755$ & $0.3744$ & $0.0000$ & $1.0000$ \\
-        & \texttt{ShapeFactor2} & $0.3706$ & $0.1908$ & $0.3622$ & $0.0000$ & $1.0000$ \\
+        \multirow{3}{*}{\textbf{MinMaxScaler}} & \texttt{Area} & $0.1393$ & $0.1255$ & $0.1032$ & $0.0000$ & $1.0000$ \\
+        & \texttt{AspectRation} & $0.3958$ & $0.1745$ & $0.3735$ & $0.0000$ & $1.0000$ \\
+        & \texttt{ShapeFactor2} & $0.3725$ & $0.1920$ & $0.3664$ & $0.0000$ & $1.0000$ \\
         \midrule
-        \multirow{3}{*}{\textbf{RobustScaler}} & \texttt{Area} & $0.3804$ & $1.2952$ & $0.0000$ & $-1.0669$ & $9.2753$ \\
-        & \texttt{AspectRation} & $0.0760$ & $0.5841$ & $0.0000$ & $-1.2460$ & $2.0827$ \\
-        & \texttt{ShapeFactor2} & $0.0463$ & $1.0494$ & $0.0000$ & $-1.9924$ & $3.5074$ \\
+        \multirow{3}{*}{\textbf{RobustScaler}} & \texttt{Area} & $0.3374$ & $1.1710$ & $0.0000$ & $-0.9626$ & $8.3681$ \\
+        & \texttt{AspectRation} & $0.1142$ & $0.8975$ & $0.0000$ & $-1.9213$ & $3.2221$ \\
+        & \texttt{ShapeFactor2} & $0.0185$ & $0.5870$ & $0.0000$ & $-1.1202$ & $1.9368$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabular*}
 \end{table}
 
 \begin{figure}[htbp]
@@ -348,7 +353,7 @@ We benchmark four scaling transformations: Unscaled Raw, StandardScaler ($z = (x
 \subsection{Multicollinearity Diagnostics and Feature Selection}
 \label{subsec:multicollinearity}
 
-We audit pairwise Pearson correlations across all 16 features. Exactly $21$ feature pairs exhibit $|r| \ge 0.90$, and $14$ pairs exceed $|r| \ge 0.95$. The correlation between `Area` and `ConvexArea` reaches $r = 0.9999$. Collinearity diagnostics via Variance Inflation Factors (VIF) reveal severe variance inflation:
+We audit pairwise Pearson correlations across all 16 features. Exactly $21$ feature pairs exhibit $|r| \ge 0.90$, and $15$ pairs exceed $|r| \ge 0.95$. The correlation between \texttt{Area} and \texttt{ConvexArea} reaches $r = 0.9999$. Collinearity diagnostics via Variance Inflation Factors (VIF) reveal severe variance inflation:
 \begin{equation}
     \text{VIF}_j = \frac{1}{1 - R_j^2}
 \end{equation}
@@ -359,28 +364,29 @@ where $R_j^2$ is the coefficient of determination when regressing feature $j$ on
     \small
     \caption{Multicollinearity Diagnostics (VIF), Feature Selection Ranking, and 8-Feature Pruned Subset.}
     \label{tab:feature_selection}
-    \begin{tabular}{lrrrc}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\linewidth}{@{} l r r r c @{}}
         \toprule
-        \textbf{Feature Name} & \textbf{Raw VIF (16 Feat)} & \textbf{ANOVA $F$-Value} & \textbf{Mutual Info (MI)} & \textbf{Pruned 8-Subset VIF} \\
+        \textbf{Feature Name} & \textbf{VIF (16 Feat)} & \textbf{ANOVA $F$-Value} & \textbf{Mutual Info (MI)} & \textbf{Pruned 8 VIF} \\
         \midrule
-        \texttt{Area} & $317{,}671.59$ & $3{,}305.90$ & $0.6698$ & $5.12$ \\
-        \texttt{ConvexArea} & $175{,}072.03$ & $3{,}245.80$ & $0.6694$ & \textit{Pruned (Redundant)} \\
-        \texttt{EquivDiameter} & $22{,}663.76$ & $3{,}998.70$ & $0.6720$ & \textit{Pruned (Redundant)} \\
-        \texttt{Perimeter} & $8{,}182.20$ & $5{,}886.60$ & $0.7511$ & \textit{Pruned (Redundant)} \\
-        \texttt{MajorAxisLength} & $1{,}229.40$ & $4{,}985.20$ & $0.7024$ & \textit{Pruned (Redundant)} \\
-        \texttt{Compactness} & $1{,}068.70$ & $5{,}960.50$ & $0.7410$ & \textit{Pruned (Redundant)} \\
-        \texttt{ShapeFactor3} & $894.20$ & $5{,}952.10$ & $0.7408$ & \textit{Pruned (Redundant)} \\
-        \texttt{MinorAxisLength} & $320.10$ & $2{,}488.30$ & $0.5780$ & \textit{Pruned (Redundant)} \\
-        \texttt{Eccentricity} & $112.50$ & $4{,}520.10$ & $0.6512$ & \textit{Pruned (Redundant)} \\
-        \texttt{AspectRation} & $88.40$ & $4{,}322.80$ & $0.6504$ & $6.48$ \\
-        \texttt{roundness} & $48.20$ & $2{,}870.40$ & $0.5840$ & $4.91$ \\
-        \texttt{ShapeFactor1} & $28.10$ & $8{,}745.30$ & $0.8120$ & $18.44$ \\
-        \texttt{ShapeFactor2} & $19.40$ & $5{,}420.70$ & $0.7180$ & $8.92$ \\
-        \texttt{Solidity} & $8.20$ & $652.40$ & $0.2140$ & $1.82$ \\
-        \texttt{Extent} & $3.40$ & $214.80$ & $0.1420$ & $1.34$ \\
-        \texttt{ShapeFactor4} & $2.80$ & $389.20$ & $0.1890$ & $1.41$ \\
+        \texttt{EquivDiameter} & $317{,}671.59$ & $25{,}488.18$ & $1.0347$ & \textit{Pruned} \\
+        \texttt{Compactness} & $275{,}722.88$ & $9{,}991.05$ & $0.8305$ & \textit{Pruned} \\
+        \texttt{ShapeFactor3} & $199{,}791.01$ & $9{,}734.66$ & $0.8305$ & \textit{Pruned} \\
+        \texttt{MajorAxisLength} & $88{,}521.08$ & $21{,}631.47$ & $0.9934$ & \textit{Pruned} \\
+        \texttt{Area} & $81{,}784.07$ & $29{,}014.84$ & $1.0353$ & $5.05$ \\
+        \texttt{ConvexArea} & $78{,}927.31$ & $28{,}960.45$ & $1.0380$ & \textit{Pruned} \\
+        \texttt{MinorAxisLength} & $78{,}064.60$ & $22{,}431.93$ & $0.9275$ & \textit{Pruned} \\
+        \texttt{AspectRation} & $13{,}800.55$ & $10{,}198.17$ & $0.8145$ & $17.67$ \\
+        \texttt{Perimeter} & $3{,}576.33$ & $24{,}327.02$ & $1.0551$ & \textit{Pruned} \\
+        \texttt{ShapeFactor2} & $1{,}242.07$ & $12{,}203.84$ & $0.9534$ & $\mathbf{18.44}$ \\
+        \texttt{Eccentricity} & $1{,}180.05$ & $8{,}159.78$ & $0.8145$ & \textit{Pruned} \\
+        \texttt{ShapeFactor1} & $608.60$ & $12{,}101.10$ & $0.9294$ & $8.30$ \\
+        \texttt{roundness} & $103.30$ & $6{,}069.85$ & $0.7955$ & $7.04$ \\
+        \texttt{ShapeFactor4} & $66.68$ & $1{,}263.08$ & $0.3630$ & $3.42$ \\
+        \texttt{Solidity} & $14.02$ & $633.40$ & $0.2306$ & $4.71$ \\
+        \texttt{Extent} & $1.24$ & $427.25$ & $0.1972$ & $1.23$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 By pruning redundant geometric duplicates, our selected 8-feature subset (\texttt{Area}, \texttt{AspectRation}, \texttt{Extent}, \texttt{Solidity}, \texttt{roundness}, \texttt{ShapeFactor1}, \texttt{ShapeFactor2}, \texttt{ShapeFactor4}) slashes the maximum VIF from $317{,}671.59$ to $18.44$, eliminating ill-conditioned matrix inversion. Figure~\ref{fig:corr_heatmap} presents the full $16\times 16$ Pearson correlation heatmap.
@@ -395,7 +401,7 @@ By pruning redundant geometric duplicates, our selected 8-feature subset (\textt
 \subsection{Principal Component Analysis (PCA)}
 \label{subsec:pca}
 
-We fit Principal Component Analysis on standardized features. PC1 explains $53.07\%$ of total variance, dominated by size metrics (`Area`, `Perimeter`, `EquivDiameter`). PC2 explains $28.84\%$, dominated by shape and elongation factors (`AspectRation`, `Compactness`, `roundness`). Cumulatively, PC1 and PC2 explain $81.91\%$ of all morphological variance, and $4$ components are required to reach the $95.00\%$ variance retention threshold. Figure~\ref{fig:pca_scree} depicts the PCA scree curve and 2D projection.
+We fit Principal Component Analysis on standardized features. PC1 explains $55.55\%$ of total variance, dominated by size metrics (\texttt{Area}, \texttt{Perimeter}, \texttt{EquivDiameter}). PC2 explains $26.36\%$, dominated by shape and elongation factors (\texttt{AspectRation}, \texttt{Compactness}, \texttt{roundness}). Cumulatively, PC1 and PC2 explain $81.91\%$ of all morphological variance, and $4$ components are required to reach the $95.00\%$ variance retention threshold. Figure~\ref{fig:pca_scree} depicts the PCA scree curve and 2D projection.
 
 \begin{figure}[htbp]
     \centering
@@ -415,24 +421,24 @@ Exploratory analysis reveals that dry bean varieties occupy structured clusters 
 \subsection{Univariate Distributions and Skewness}
 \label{subsec:univariate_eda}
 
-Size attributes (`Area`, `Perimeter`, `MajorAxisLength`) display substantial positive skewness ($> 1.25$) due to the long right tail introduced by the giant `BOMBAY` cultivar. Conversely, derived bounding metrics such as `Solidity` and `ShapeFactor4` exhibit extreme leptokurtic concentration near unity ($S \approx 0.985$--$0.995$), reflecting smooth convex grain contours. Figure~\ref{fig:feat_dist} illustrates the density distributions across all 16 attributes.
+Size attributes (\texttt{Area}, \texttt{Perimeter}, \texttt{MajorAxisLength}) display substantial positive skewness ($> 1.25$) due to the long right tail introduced by the giant \texttt{BOMBAY} cultivar. Conversely, derived bounding metrics such as \texttt{Solidity} and \texttt{ShapeFactor4} exhibit extreme leptokurtic concentration near unity ($S \approx 0.985$--$0.995$), reflecting smooth convex grain contours. Figure~\ref{fig:feat_dist} illustrates the density distributions across six representative morphological features (\texttt{Area}, \texttt{Perimeter}, \texttt{MajorAxisLength}, \texttt{AspectRation}, \texttt{Solidity}, and \texttt{ShapeFactor1}).
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\linewidth]{fig03_feature_distributions}
-    \caption{Kernel density estimates (KDE) and histograms across all 16 continuous morphological features for the deduplicated dataset ($N = 13{,}543$).}
+    \caption{Kernel density estimates (KDE) and histograms across six representative morphological features (\texttt{Area}, \texttt{Perimeter}, \texttt{MajorAxisLength}, \texttt{AspectRation}, \texttt{Solidity}, and \texttt{ShapeFactor1}) for the deduplicated dataset ($N = 13{,}543$).}
     \label{fig:feat_dist}
 \end{figure}
 
 \subsection{Cultivar Stratified Boxplots and Bivariate Relationships}
 \label{subsec:bivariate_eda}
 
-Figure~\ref{fig:outlier_boxplots} contrasts global outlier distributions against cultivar-stratified boxplots. Within its own subpopulation, `BOMBAY` exhibits a standard Gaussian-like distribution with minimal intra-class outliers, reinforcing our decision to reject global outlier filtering.
+Figure~\ref{fig:outlier_boxplots} contrasts global outlier distributions against cultivar-stratified boxplots. Within its own subpopulation, \texttt{BOMBAY} exhibits a standard Gaussian-like distribution with minimal intra-class outliers, reinforcing our decision to reject global outlier filtering.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.88\linewidth]{fig04_outlier_boxplots_by_class}
-    \caption{Cultivar-stratified boxplots for `Area`, `AspectRation`, `roundness`, and `Compactness`, demonstrating clear separation of `BOMBAY` and overlapping profiles between `SIRA` and `DERMASON`.}
+    \caption{Cultivar-stratified boxplots for \texttt{Area}, \texttt{AspectRation}, \texttt{Solidity}, and \texttt{ShapeFactor1}, demonstrating clear separation of \texttt{BOMBAY} and overlapping profiles between \texttt{SIRA} and \texttt{DERMASON}.}
     \label{fig:outlier_boxplots}
 \end{figure}
 
@@ -442,13 +448,13 @@ Bivariate scatter plots in Figure~\ref{fig:scatter_rel} reveal clear morphologic
     \item \texttt{SEKER} separates cleanly by high circularity ($R > 0.85$) and low AspectRatio ($K < 1.35$).
     \item \texttt{HOROZ} occupies the high AspectRatio ($K > 1.8$), low roundness ($R < 0.70$) regime.
     \item \texttt{DERMASON} and \texttt{SIRA} heavily overlap in the small Area, moderate AspectRatio quadrant, creating the primary decision boundary challenge.
-    \item \texttt{BARBUNYA} and \texttt{CALI} overlap in the medium-large size regime, separated primarily by `roundness` and `Solidity`.
+    \item \texttt{BARBUNYA} and \texttt{CALI} overlap in the medium-large size regime, separated primarily by \texttt{roundness} and \texttt{Solidity}.
 \end{itemize}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.88\linewidth]{fig05_relationship_scatter}
-    \caption{Pairwise morphological relationships: Area vs. AspectRation, Compactness vs. ShapeFactor1, and ConvexArea vs. EquivDiameter, mapping cultivar separability.}
+    \caption{Pairwise morphological relationships: (Left) Bean Size vs. Elongation (\texttt{Area} vs. \texttt{AspectRation}) and (Right) Dimensional Scaling (\texttt{MajorAxisLength} vs. \texttt{MinorAxisLength}), mapping cultivar separability.}
     \label{fig:scatter_rel}
 \end{figure}
 
@@ -483,7 +489,7 @@ Neighbor class purity is computed as the fraction of top-$k$ neighbors sharing t
 \subsection{Unsupervised Clustering Algorithms}
 \label{subsec:meth_clustering}
 
-We evaluate three foundational clustering algorithms (excluding `Class` labels during fitting):
+We evaluate three foundational clustering algorithms (excluding \texttt{Class} labels during fitting):
 \begin{enumerate}[leftmargin=1.5em]
     \item \textbf{$k$-Means Clustering~\citep{lloyd1982least}:} Minimizes Within-Cluster Sum of Squares (WCSS / Inertia):
     \begin{equation}
@@ -513,8 +519,8 @@ We train four supervised classifiers on the stratified 80/20 train/test split ($
     \begin{equation}
         I_G(t) = 1 - \sum_{c=1}^C p(c|t)^2
     \end{equation}
-    Hyperparameters are tuned via 5-fold Stratified Cross-Validation on the training split, selecting `max_depth=10` and `min_samples_leaf=5`.
-    \item \textbf{Interpretable Rule-Based Classifier:} A constrained shallow decision tree (`max_depth=4`) generating human-auditable IF-THEN rules with explicit rule coverage and precision.
+    Hyperparameters are tuned via 5-fold Stratified Cross-Validation on the training split, selecting \texttt{max\_depth=10} and \texttt{min\_samples\_leaf=5}.
+    \item \textbf{Interpretable Rule-Based Classifier:} A constrained shallow decision tree (\texttt{max\_depth=4}) generating human-auditable IF-THEN rules with explicit rule coverage and precision.
     \item \textbf{Gaussian Naïve Bayes:} Maximum a posteriori classification assuming class-conditional feature independence:
     \begin{equation}
         P(y = c \mid \mathbf{x}) \propto P(y = c) \prod_{j=1}^d \frac{1}{\sqrt{2\pi\sigma_{cj}^2}} \exp\left(-\frac{(x_j - \mu_{cj})^2}{2\sigma_{cj}^2}\right)
@@ -525,7 +531,7 @@ We train four supervised classifiers on the stratified 80/20 train/test split ($
 \subsection{Morphological Association Rule Mining}
 \label{subsec:meth_association}
 
-To discover interpretable morphological co-occurrence patterns without producing trivial geometric tautologies, we discretize five low-collinearity features (`Area`, `AspectRation`, `roundness`, `Solidity`, `Extent`) into tertiles (`Low`, `Medium`, `High`). Using the FP-Growth algorithm~\citep{han2000mining,raschka2018mlxtend}, we extract frequent itemsets at minimum support $\text{minsup} = 0.02$ and mine Class Association Rules (CARs) where consequents are constrained to a single cultivar label ($\mathcal{A} \to \{Class = c\}$):
+To discover interpretable morphological co-occurrence patterns without producing trivial geometric tautologies, we discretize five low-collinearity features (\texttt{Area}, \texttt{AspectRation}, \texttt{roundness}, \texttt{Solidity}, \texttt{Extent}) into tertiles (\texttt{Low}, \texttt{Medium}, \texttt{High}). Using the FP-Growth algorithm~\citep{han2000mining,raschka2018mlxtend}, we extract frequent itemsets at minimum support $\text{minsup} = 0.02$ and mine Class Association Rules (CARs) where consequents are constrained to a single cultivar label ($\mathcal{A} \to \{Class = c\}$):
 \begin{align}
     \text{Support}(\mathcal{A} \to \mathcal{B}) &= P(\mathcal{A} \cup \mathcal{B}) \\
     \text{Confidence}(\mathcal{A} \to \mathcal{B}) &= \frac{P(\mathcal{A} \cup \mathcal{B})}{P(\mathcal{A})} \\
@@ -559,9 +565,10 @@ Table~\ref{tab:similarity} records the empirical concordance across distance met
     \small
     \caption{Empirical Nearest-Neighbor Concordance ($k=10$) Across Distance Metrics and Scalers.}
     \label{tab:similarity}
-    \begin{tabular}{llcccc}
+    \setlength{\tabcolsep}{4.5pt}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}X cccc @{}}
         \toprule
-        \textbf{Type} & \textbf{Comparison (A vs. B)} & \textbf{Jaccard Overlap} & \textbf{1-NN Agree} & \textbf{Purity A} & \textbf{Purity B} \\
+        \textbf{Type} & \textbf{Comparison (A vs. B)} & \textbf{Jaccard @10} & \textbf{1-NN Agree} & \textbf{Purity A} & \textbf{Purity B} \\
         \midrule
         \multirow{3}{*}{\textbf{Metric}} & $L_2$ (Std) vs. $L_1$ (Std) & $0.4676$ & $0.5212$ & $0.8937$ & $0.8934$ \\
         & $L_2$ (Std) vs. Cosine (Std) & $0.3736$ & $0.4238$ & $0.8937$ & $0.8732$ \\
@@ -571,7 +578,7 @@ Table~\ref{tab:similarity} records the empirical concordance across distance met
         & MinMaxScaler vs. StandardScaler & $0.5055$ & $0.5550$ & $0.8917$ & $0.8937$ \\
         & RobustScaler vs. StandardScaler & $0.7274$ & $0.7701$ & $0.8924$ & $0.8937$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{figure}[htbp]
@@ -581,7 +588,7 @@ Table~\ref{tab:similarity} records the empirical concordance across distance met
     \label{fig:dist_comp}
 \end{figure}
 
-On standardized features, Euclidean and Manhattan metrics yield nearly identical neighbor class purity ($89.37\%$ vs. $89.34\%$), despite sharing only a $46.76\%$ top-10 Jaccard overlap. On raw features, Euclidean overlap with standardized space collapses to $1.51\%$, and neighbor purity plunges by $\Delta = -0.2498$ (down to $64.39\%$). In raw space, query points match neighbors differing in `Area` by an average of only $35.76$ pixels, compared to $1{,}405.11$ pixels in standardized space. The $75.5\text{M}\times$ scale disparity forces raw Euclidean distance to function almost exclusively as a 1D pixel count sorter.
+On standardized features, Euclidean and Manhattan metrics yield nearly identical neighbor class purity ($89.37\%$ vs. $89.34\%$), despite sharing only a $46.76\%$ top-10 Jaccard overlap. On raw features, Euclidean overlap with standardized space collapses to $1.51\%$, and neighbor purity plunges by $\Delta = -0.2498$ (down to $64.39\%$). In raw space, query points match neighbors differing in \texttt{Area} by an average of only $35.76$ pixels, compared to $1{,}405.11$ pixels in standardized space. The $75.5\text{M}\times$ scale disparity forces raw Euclidean distance to function almost exclusively as a 1D pixel count sorter.
 
 \subsection{Unsupervised Clustering Structure}
 \label{subsec:res_clustering}
@@ -593,7 +600,8 @@ Table~\ref{tab:clustering} compares clustering algorithms on standardized featur
     \small
     \caption{Unsupervised Clustering Performance Summary ($k=7$, Standardized Features).}
     \label{tab:clustering}
-    \begin{tabular}{lcccccc}
+    \setlength{\tabcolsep}{4.5pt}
+    \begin{tabularx}{\linewidth}{@{} >{\raggedright\arraybackslash}X cccccc @{}}
         \toprule
         \textbf{Clustering Algorithm} & \textbf{Instances} & \textbf{Clusters} & \textbf{Noise (\%)} & \textbf{Silhouette} & \textbf{ARI} & \textbf{NMI} \\
         \midrule
@@ -601,7 +609,7 @@ Table~\ref{tab:clustering} compares clustering algorithms on standardized featur
         \textbf{Hierarchical Ward ($k=7$)} & $2{,}500$ & $7$ & $0.00\%$ & $0.2959$ & $0.6623$ & $\mathbf{0.7312}$ \\
         \textbf{DBSCAN ($\varepsilon=1.5, \text{min}=10$)} & $13{,}543$ & $2$ & $1.71\%$ & $\mathbf{0.5668}$ & $0.0343$ & $0.1554$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{figure}[htbp]
@@ -618,7 +626,7 @@ Table~\ref{tab:clustering} compares clustering algorithms on standardized featur
     \label{fig:clustering_pca}
 \end{figure}
 
-The $k$-Means sweep shows geometric elbow inflections at $k = 3, 4$ (Silhouette $= 0.4074, 0.3541$). However, agreement with biological cultivars peaks at $k = 7$ ($\text{ARI} = 0.6669$, $\text{NMI} = 0.7124$). Hierarchical Ward linkage achieves closely congruent partitions ($\text{ARI} = 0.6623$). DBSCAN discovers exactly two dense clusters: Cluster 1 isolates $487$ `BOMBAY` grains with zero contamination, while Cluster 0 lumps the remaining six varieties into a single continuous density manifold ($12{,}825$ grains), proving that intermediate morphological transitions bridge non-*Bombay* cultivars.
+The $k$-Means sweep shows geometric elbow inflections at $k = 3, 4$ (Silhouette $= 0.4074, 0.3541$). However, agreement with biological cultivars peaks at $k = 7$ ($\text{ARI} = 0.6669$, $\text{NMI} = 0.7124$). Hierarchical Ward linkage achieves closely congruent partitions ($\text{ARI} = 0.6623$). DBSCAN discovers exactly two dense clusters: Cluster 1 isolates $487$ \texttt{BOMBAY} grains with zero contamination, while Cluster 0 lumps the remaining six varieties into a single continuous density manifold ($12{,}825$ grains), proving that intermediate morphological transitions bridge non-\textit{Bombay} cultivars.
 
 \subsection{Supervised Classification Performance}
 \label{subsec:res_classification}
@@ -630,16 +638,17 @@ Table~\ref{tab:classification} summarizes model benchmark metrics on the stratif
     \small
     \caption{Supervised Classification Performance Across Four Algorithmic Paradigms.}
     \label{tab:classification}
-    \begin{tabular}{lcccccc}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\linewidth}{@{} >{\raggedright\arraybackslash}X cccccc @{}}
         \toprule
-        \textbf{Classifier} & \textbf{Accuracy} & \textbf{Macro-P} & \textbf{Macro-R} & \textbf{Macro-F1} & \textbf{Weighted-F1} & \textbf{5-Fold CV F1} \\
+        \textbf{Classifier} & \textbf{Accuracy} & \textbf{Macro-P} & \textbf{Macro-R} & \textbf{Macro-F1} & \textbf{W-F1} & \textbf{5-Fold CV} \\
         \midrule
         \textbf{$k$-Nearest Neighbors ($k=7$)} & $\mathbf{0.9118}$ & $\mathbf{0.9253}$ & $\mathbf{0.9224}$ & $\mathbf{0.9237}$ & $\mathbf{0.9119}$ & $\mathbf{0.9357}$ \\
         \textbf{Decision Tree (Tuned)} & $0.9070$ & $0.9220$ & $0.9204$ & $0.9211$ & $0.9071$ & $0.9236$ \\
         \textbf{Gaussian Naïve Bayes} & $0.8970$ & $0.9081$ & $0.9082$ & $0.9072$ & $0.8972$ & $0.9064$ \\
-        \textbf{Rule-Based Classifier (Depth 4)} & $0.8158$ & $0.7363$ & $0.7889$ & $0.7520$ & $0.7839$ & $0.8072$ \\
+        \textbf{Rule-Based (Depth 4)} & $0.8158$ & $0.7363$ & $0.7889$ & $0.7520$ & $0.7839$ & $0.8072$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{table}[htbp]
@@ -647,7 +656,8 @@ Table~\ref{tab:classification} summarizes model benchmark metrics on the stratif
     \small
     \caption{Per-Class Precision, Recall, and F1-Scores on Test Split ($N_{\text{test}} = 2{,}709$).}
     \label{tab:per_class}
-    \begin{tabular}{lcccccccc}
+    \setlength{\tabcolsep}{3.2pt}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l cccccccc @{}}
         \toprule
         \multirow{2}{*}{\textbf{Cultivar}} & \multicolumn{2}{c}{\textbf{$k$-NN ($k=7$)}} & \multicolumn{2}{c}{\textbf{Decision Tree}} & \multicolumn{2}{c}{\textbf{Gaussian NB}} & \multicolumn{2}{c}{\textbf{Rule Classifier}} \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
@@ -661,17 +671,17 @@ Table~\ref{tab:classification} summarizes model benchmark metrics on the stratif
         \texttt{SEKER} & $0.9360$ & $0.9406$ & $0.9384$ & $0.9304$ & $0.9360$ & $0.9291$ & $0.9310$ & $0.9322$ \\
         \texttt{SIRA} & $0.8653$ & $\mathbf{0.8571}$ & $0.8482$ & $\mathbf{0.8434}$ & $0.8956$ & $\mathbf{0.8528}$ & $0.8254$ & $\mathbf{0.8333}$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabular*}
 \end{table}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.88\linewidth]{fig11_classification_confusion_matrices}
-    \caption{Normalized confusion matrices across four classification paradigms, illustrating perfect $100\%$ accuracy on `BOMBAY` and reciprocal confusion between `SIRA` and `DERMASON`.}
+    \caption{Normalized confusion matrices across four classification paradigms, illustrating perfect $100\%$ accuracy on \texttt{BOMBAY} and reciprocal confusion between \texttt{SIRA} and \texttt{DERMASON}.}
     \label{fig:conf_matrices}
 \end{figure}
 
-`BOMBAY` is classified with $100\%$ precision and recall across all models. Conversely, `SIRA` yields the lowest F1-score across all classifiers ($0.8434$--$0.8571$), misclassifying $63$ grains as `DERMASON` in $k$-NN and $68$ in Decision Tree. Figure~\ref{fig:conf_matrices} visualizes the normalized confusion matrices. In the depth-4 rule classifier, `BARBUNYA` achieves $0\%$ recall because its decision region is subsumed by `CALI` at coarse depths.
+\texttt{BOMBAY} is classified with $100\%$ precision and recall across all models. Conversely, \texttt{SIRA} yields the lowest F1-score across all classifiers ($0.8434$--$0.8571$), misclassifying $63$ grains as \texttt{DERMASON} in $k$-NN and $68$ in Decision Tree. Figure~\ref{fig:conf_matrices} visualizes the normalized confusion matrices. In the depth-4 rule classifier, \texttt{BARBUNYA} achieves $0\%$ recall because its decision region is subsumed by \texttt{CALI} at coarse depths.
 
 \subsection{Morphological Class Association Rules}
 \label{subsec:res_association}
@@ -683,9 +693,10 @@ Table~\ref{tab:assoc_rules} lists top discovered Class Association Rules, and Fi
     \small
     \caption{Top Discretized Morphological Class Association Rules Mined via FP-Growth.}
     \label{tab:assoc_rules}
-    \begin{tabular}{llcccc}
+    \setlength{\tabcolsep}{4.5pt}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}X cccc @{}}
         \toprule
-        \textbf{Cultivar} & \textbf{Morphological Antecedent} & \textbf{Support} & \textbf{Confidence} & \textbf{Lift} & \textbf{Conviction} \\
+        \textbf{Cultivar} & \textbf{Morphological Antecedent Rule} & \textbf{Support} & \textbf{Confidence} & \textbf{Lift} & \textbf{Conviction} \\
         \midrule
         \texttt{BARBUNYA} & $\text{Area}_{\text{High}} \land \text{Aspect}_{\text{Low}} \land \text{round}_{\text{Low}}$ & $0.0212$ & $\mathbf{0.9795}$ & $\mathbf{10.0345}$ & $44.07$ \\
         \texttt{CALI} & $\text{Area}_{\text{High}} \land \text{Aspect}_{\text{High}} \land \text{round}_{\text{Med}}$ & $0.0315$ & $0.7993$ & $6.6406$ & $4.38$ \\
@@ -694,7 +705,7 @@ Table~\ref{tab:assoc_rules} lists top discovered Class Association Rules, and Fi
         \texttt{SIRA} & $\text{Area}_{\text{Med}} \land \text{Aspect}_{\text{Med}} \land \text{round}_{\text{Med}}$ & $0.0310$ & $0.9375$ & $4.8166$ & $12.89$ \\
         \texttt{DERMASON} & $\text{Area}_{\text{Low}} \land \text{Aspect}_{\text{Med}} \land \text{round}_{\text{High}}$ & $0.0509$ & $0.9801$ & $3.7433$ & $37.12$ \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{figure}[htbp]
@@ -713,18 +724,19 @@ Table~\ref{tab:stress_summary} consolidates the results across all four controll
 
 \begin{table}[htbp]
     \centering
-    \small
+    \footnotesize
     \caption{Consolidated Quantitative Performance Across the Four Stress-Test Experiments.}
     \label{tab:stress_summary}
-    \begin{tabular}{llccccc}
+    \setlength{\tabcolsep}{3.5pt}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}p{3.4cm} cccc >{\raggedright\arraybackslash}X @{}}
         \toprule
-        \textbf{Experiment} & \textbf{Perturbation Level} & \textbf{DT F1} & \textbf{$k$-NN F1} & \textbf{GNB F1} & \textbf{$k$-Means ARI} & \textbf{Key Degradation} \\
+        \textbf{Experiment} & \textbf{Perturbation Level} & \textbf{DT F1} & \textbf{$k$-NN F1} & \textbf{GNB F1} & \textbf{KM ARI} & \textbf{Key Degradation Observation} \\
         \midrule
         \multirow{3}{*}{\textbf{SRQ1: Missing}} & Baseline ($0\%$ MCAR) & $0.9211$ & $0.9237$ & $0.9072$ & $0.6669$ & Pristine benchmark \\
-        & $10\%$ MCAR (Median) & $0.8954$ & $0.9096$ & $0.8945$ & $0.6432$ & Graceful degradation \\
-        & $30\%$ MCAR (Median) & $0.8563$ & $0.8710$ & $0.8840$ & $0.5620$ & Median buffers trees \\
+        & $10\%$ MCAR (Median) & $0.8954$ & $0.9096$ & $0.8945$ & $0.6432$ & Graceful linear degradation \\
+        & $30\%$ MCAR (Median) & $0.8563$ & $0.8710$ & $0.8840$ & $0.5620$ & Median buffers tree splits \\
         \midrule
-        \multirow{3}{*}{\textbf{SRQ2: Outlier}} & Baseline ($0\%$ Outliers) & $0.9211$ & $0.9237$ & $0.9072$ & $0.6669$ & Clean geometry \\
+        \multirow{3}{*}{\textbf{SRQ2: Outlier}} & Baseline ($0\%$ Outliers) & $0.9211$ & $0.9237$ & $0.9072$ & $0.6669$ & Clean uncorrupted geometry \\
         & $10\%$ Outliers ($+8\sigma$) & $0.9087$ & $0.9248$ & $0.8390$ & $0.4009$ & GNB / $k$-Means drop \\
         & $20\%$ Outliers ($+8\sigma$) & $\mathbf{0.9101}$ & $\mathbf{0.9246}$ & $0.8325$ & $\mathbf{0.2427}$ & DT robust ($\Delta = -0.0110$) \\
         \midrule
@@ -734,9 +746,9 @@ Table~\ref{tab:stress_summary} consolidates the results across all four controll
         \midrule
         \multirow{3}{*}{\textbf{SRQ4: Features}} & All 16 Features (Collinear) & $0.9211$ & $0.9237$ & $\mathbf{0.9072}$ & $0.6669$ & Max VIF $= 317{,}671.59$ \\
         & Pruned 8 Features & $0.9144$ & $0.9238$ & $\mathbf{0.9208}$ & $0.4795$ & GNB gain $\Delta = +0.0136$ \\
-        & PCA --- 2 Components & $0.8509$ & $0.8528$ & $0.8563$ & $0.6872$ & Boundary cues lost \\
+        & PCA --- 2 Components & $0.8509$ & $0.8528$ & $0.8563$ & $0.6872$ & Fine boundary cues lost \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{figure}[htbp]
@@ -780,15 +792,16 @@ Table~\ref{tab:master_comparison} presents the master comparative matrix synthes
     \small
     \caption{Master Comparative Analysis Matrix Across Data Mining Paradigms Under Stress.}
     \label{tab:master_comparison}
-    \begin{tabularx}{\linewidth}{lXccccX}
+    \setlength{\tabcolsep}{3.2pt}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}p{2.5cm} cccc >{\raggedright\arraybackslash}X @{}}
         \toprule
-        \textbf{Model Algorithm} & \textbf{Mathematical Paradigm} & \textbf{Clean F1} & \textbf{30\% MCAR Drop} & \textbf{20\% Outlier Drop} & \textbf{Raw Scale Drop} & \textbf{Optimal Stress Regime} \\
+        \textbf{Model Algorithm} & \textbf{Paradigm} & \textbf{Clean F1} & \textbf{MCAR Drop} & \textbf{Outlier Drop} & \textbf{Scale Drop} & \textbf{Optimal Stress Regime} \\
         \midrule
-        \textbf{Decision Tree} & Axis-Aligned Inequalities & $0.9211$ & $-0.0648$ & $\mathbf{-0.0110}$ & $\mathbf{-0.0014}$ & Scale-invariant; extreme outlier pipelines. \\
-        \textbf{$k$-NN ($k=7$)} & Non-Parametric Metric Space & $\mathbf{0.9237}$ & $-0.0560$ & $+0.0009$ & $\mathbf{-0.1985}$ & Normalized pipelines; moderate missingness. \\
-        \textbf{Gaussian NB} & Probabilistic Product Likelihood & $0.9072$ & $\mathbf{-0.0232}$ & $-0.0747$ & $-0.1403$ & De-correlated features; high missingness. \\
-        \textbf{Rule Classifier} & Shallow Bounding Pruning & $0.7520$ & $-0.1458$ & $-0.0043$ & $0.0000$ & Human-auditable regulatory inspection. \\
-        \textbf{$k$-Means} & Centroid WCSS Minimization & $0.6669^*$ & $-0.1049^*$ & $\mathbf{-0.4242^*}$ & $-0.2788^*$ & Pristine, spherical, outlier-free data. \\
+        \textbf{Decision Tree} & Axis-Aligned Tree & $0.9211$ & $-0.0648$ & $\mathbf{-0.0110}$ & $\mathbf{-0.0014}$ & Scale-invariant; extreme outlier pipelines. \\
+        \textbf{$k$-NN ($k=7$)} & Metric Space $k$-NN & $\mathbf{0.9237}$ & $-0.0560$ & $+0.0009$ & $\mathbf{-0.1985}$ & Normalized pipelines; moderate missingness. \\
+        \textbf{Gaussian NB} & Probabilistic Bayes & $0.9072$ & $\mathbf{-0.0232}$ & $-0.0747$ & $-0.1403$ & De-correlated features; high missingness. \\
+        \textbf{Rule Classifier} & Depth-Limited Rule & $0.7520$ & $-0.1458$ & $-0.0043$ & $0.0000$ & Human-auditable regulatory inspection. \\
+        \textbf{$k$-Means} & Centroid WCSS & $0.6669^*$ & $-0.1049^*$ & $\mathbf{-0.4242^*}$ & $-0.2788^*$ & Pristine, spherical, outlier-free data. \\
         \bottomrule
         \multicolumn{7}{l}{\footnotesize $^*$Clustering performance evaluated via Adjusted Rand Index (ARI).}
     \end{tabularx}
@@ -815,16 +828,16 @@ We formalize our five most significant empirical discoveries using the structure
 
 \subsection{Finding 1: The 100\% BOMBAY Outlier Paradox and Zero-Contamination Isolation}
 \begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Observation:} Exactly $522$ out of $522$ `BOMBAY` beans ($100.0\%$) are flagged as statistical IQR outliers in global univariate auditing, yet `BOMBAY` achieves perfect $100\%$ classification accuracy across every tested model.
-    \item \textbf{Evidence:} Table~\ref{tab:data_quality} records $522/522$ `BOMBAY` instances exceeding the global IQR threshold ($99{,}031.25$ pixels). Table~\ref{tab:per_class} confirms Precision $= 1.000$, Recall $= 1.000$, and F1 $= 1.000$ across all classifiers. DBSCAN (Table~\ref{tab:clustering}) isolates $487$ `BOMBAY` grains into a dedicated cluster with zero contamination.
-    \item \textbf{Interpretation:} Global univariate outlier filters assume unimodal distributions. Because *Bombay* is biologically a giant cultivar (mean Area $= 173{,}485.06$ pixels vs. overall median $= 44{,}580.00$ pixels), its entire subpopulation lies beyond the global whisker. What global statistics flag as ``noise'' is pure, biologically separable class signal.
+    \item \textbf{Observation:} Exactly $522$ out of $522$ \texttt{BOMBAY} beans ($100.0\%$) are flagged as statistical IQR outliers in global univariate auditing, yet \texttt{BOMBAY} achieves perfect $100\%$ classification accuracy across every tested model.
+    \item \textbf{Evidence:} Table~\ref{tab:data_quality} records $522/522$ \texttt{BOMBAY} instances exceeding the global IQR threshold ($99{,}031.25$ pixels). Table~\ref{tab:per_class} confirms Precision $= 1.000$, Recall $= 1.000$, and F1 $= 1.000$ across all classifiers. DBSCAN (Table~\ref{tab:clustering}) isolates $487$ \texttt{BOMBAY} grains into a dedicated cluster with zero contamination.
+    \item \textbf{Interpretation:} Global univariate outlier filters assume unimodal distributions. Because \textit{Bombay} is biologically a giant cultivar (mean Area $= 173{,}485.06$ pixels vs. overall median $= 44{,}580.00$ pixels), its entire subpopulation lies beyond the global whisker. What global statistics flag as ``noise'' is pure, biologically separable class signal.
 \end{itemize}
 
 \subsection{Finding 2: Raw Euclidean Distance Collapse and Area Hijacking}
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{Observation:} Unscaled Euclidean distance collapses into a 1D pixel count sort, destroying nearest-neighbor class purity.
     \item \textbf{Evidence:} Table~\ref{tab:similarity} demonstrates that raw Euclidean distance shares only a $0.0151$ ($1.51\%$) top-10 Jaccard overlap with standardized space. Neighbor purity plunges by $\Delta = -0.2498$ (from $89.37\%$ to $64.39\%$), and $k$-NN Macro-F1 collapses by $\Delta = -0.1985$ (Table~\ref{tab:master_comparison}).
-    \item \textbf{Interpretation:} The $75.5\text{M}\times$ scale disparity between `Area` ($[20{,}420, 254{,}616]$) and `ShapeFactor2` ($[0.000564, 0.003666]$) forces squared differences in `Area` to contribute $> 99.9\%$ of total distance, discarding circularity and elongation cues.
+    \item \textbf{Interpretation:} The $75.5\text{M}\times$ scale disparity between \texttt{Area} ($[20{,}420, 254{,}616]$) and \texttt{ShapeFactor2} ($[0.000564, 0.003666]$) forces squared differences in \texttt{Area} to contribute $> 99.9\%$ of total distance, discarding circularity and elongation cues.
 \end{itemize}
 
 \subsection{Finding 3: Naïve Bayes Performance Inversion Under Collinearity Pruning}
@@ -845,7 +858,7 @@ We formalize our five most significant empirical discoveries using the structure
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{Observation:} Discretized FP-Growth discovers asymmetric rule lift across cultivars, establishing high-lift signatures for distinctive varieties and low-lift rules for overlapping varieties.
     \item \textbf{Evidence:} Table~\ref{tab:assoc_rules} documents $\{\text{Area}_{\text{High}} \land \text{Aspect}_{\text{Low}} \land \text{round}_{\text{Low}}\} \to \{\texttt{BARBUNYA}\}$ achieving $\text{Lift} = 10.0345$ ($\text{Conf} = 97.95\%$) and $\{\text{Area}_{\text{Med}} \land \text{Aspect}_{\text{High}} \land \text{round}_{\text{Low}}\} \to \{\texttt{HOROZ}\}$ achieving $\text{Lift} = 6.1999$, compared to \texttt{DERMASON} rules yielding lift below $3.75$.
-    \item \textbf{Interpretation:} High-lift rules identify specific combinations of morphological tertiles unique to a cultivar. Low-lift rules reflect baseline cultivar prevalence boundaries and continuous morphological overlap between `DERMASON` and `SIRA`.
+    \item \textbf{Interpretation:} High-lift rules identify specific combinations of morphological tertiles unique to a cultivar. Low-lift rules reflect baseline cultivar prevalence boundaries and continuous morphological overlap between \texttt{DERMASON} and \texttt{SIRA}.
 \end{itemize}
 
 % ==============================================================================
@@ -873,9 +886,9 @@ This research provides a rigorous empirical stress test of data mining pipelines
 \label{subsec:synthesis_rq}
 
 \begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Answer to RQ1 \& RQ2:} Dry bean morphology is governed by two dominant physical axes: grain size (PC1, $53.07\%$ variance) and elongation (PC2, $28.84\%$ variance), which cumulatively explain $81.91\%$ of total variance. Derived shape factors (`ShapeFactor1`, ANOVA $F = 8{,}745.3$; `Compactness`, ANOVA $F = 5{,}960.5$) provide superior class discrimination compared to raw pixel counts.
-    \item \textbf{Answer to RQ3:} Three natural macro-clusters emerge: giant grains (`BOMBAY`, completely separated), circular grains (`SEKER`), and elongated grains. Severe morphological overlap occurs between `SIRA` and `DERMASON` (accounting for $> 65\%$ of all classification errors) and between `BARBUNYA` and `CALI`.
-    \item \textbf{Answer to RQ4:} For supervised deployment under sensor degradation, **$k$-Nearest Neighbors ($k=7$) paired with RobustScaler** delivers the highest overall performance (Macro-F1 $= 0.9237$) and strongest resilience across moderate missingness. Where computational simplicity or outlier immunity is paramount, **Decision Trees** provide unmatched scale invariance and outlier robustness.
+    \item \textbf{Answer to RQ1 \& RQ2:} Dry bean morphology is governed by two dominant physical axes: grain size (PC1, $55.55\%$ variance) and elongation (PC2, $26.36\%$ variance), which cumulatively explain $81.91\%$ of total variance ($4$ components reach $95.00\%$). Global feature ranking demonstrates that primary size attributes exhibit the highest raw association with cultivars (\texttt{Area}, ANOVA $F = 29{,}014.84$, $\text{MI} = 1.0353$; \texttt{ConvexArea}, ANOVA $F = 28{,}960.45$; \texttt{Perimeter}, $\text{MI} = 1.0551$). However, due to extreme pairwise collinearity ($r > 0.96$), derived scale-invariant shape factors (\texttt{ShapeFactor2}, \texttt{ShapeFactor1}, and \texttt{AspectRation}) provide essential complementary discrimination once collinear geometric duplicates are pruned.
+    \item \textbf{Answer to RQ3:} Three natural macro-clusters emerge: giant grains (\texttt{BOMBAY}, completely separated), circular grains (\texttt{SEKER}), and elongated grains. Severe morphological overlap occurs between \texttt{SIRA} and \texttt{DERMASON} (accounting for $> 65\%$ of all classification errors) and between \texttt{BARBUNYA} and \texttt{CALI}.
+    \item \textbf{Answer to RQ4:} For supervised deployment under sensor degradation, \textbf{$k$-Nearest Neighbors ($k=7$) paired with RobustScaler} delivers the highest overall performance (Macro-F1 $= 0.9237$) and strongest resilience across moderate missingness. Where computational simplicity or outlier immunity is paramount, \textbf{Decision Trees} provide unmatched scale invariance and outlier robustness.
     \item \textbf{Answer to SRQ1--SRQ4:} Pipelines degrade gracefully up to $10\%$ MCAR missingness ($F_1 > 0.89$), with Median imputation buffering tree models effectively. Decision Trees exhibit complete resilience to $+8\sigma$ outliers ($\Delta = -0.0110$), whereas $k$-Means collapses catastrophically ($\Delta \text{ARI} = -0.4242$). Raw unscaled Euclidean distance collapses into a 1D pixel sort ($\Delta = -0.1985$), which RobustScaler successfully prevents. Pruning collinear features directly improves Gaussian Naïve Bayes Macro-F1 by $+0.0136$.
 \end{itemize}
 
