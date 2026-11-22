@@ -7,7 +7,7 @@
 | **University** | East West University — Department of Computer Science and Engineering |
 | **Course** | CSE477 — Data Mining |
 | **Faculty** | Sanzana Karim Lora, Lecturer, CSE |
-| **Semester & Section** | Fall 2026 \| Section: X |
+| **Semester & Section** | Fall 2026 \| Section: 4 |
 | **Assigned Group & Theme** | **Group 10 — "The Data Mining Stress Test"** (*How Much Can a Data-Mining Model Survive?*) |
 | **Proposed Research Title** | *Surviving Degradation: A Systematic Robustness and Stress-Test Investigation of Clustering, Classification, and Similarity Models on Agricultural Computer Vision Data* |
 | **Presenters** | **Syed Zubayear Bin Khaled** — `2023-2-60-107` <br> **Md. Arifur Rahman Shihab** — `2023-2-60-176` |
@@ -238,7 +238,7 @@ cse477-group10-stress-test/
 When generating `report/latex/main.tex` and `report/latex/references.bib` to compile `report/project_report.pdf`, the writing agent **must strictly follow every instruction below**.
 
 ### 7.1 Mandatory Report Structure (Exact Match to Guideline Section 23)
-1. **Title Page:** University name (East West University, Dept. of CSE), Course (`CSE477: Data Mining`), Semester (`Fall 2026 | Section: X`), Faculty (`Sanzana Karim Lora, Lecturer, CSE`), Research Title, Group 10 theme, and Presenters with IDs (`Syed Zubayear Bin Khaled — 2023-2-60-107`, `Md. Arifur Rahman Shihab — 2023-2-60-176`).
+1. **Title Page:** University name (East West University, Dept. of CSE), Course (`CSE477: Data Mining`), Semester (`Fall 2026 | Section: 4`), Faculty (`Sanzana Karim Lora, Lecturer, CSE`), Research Title, Group 10 theme, and Presenters with IDs (`Syed Zubayear Bin Khaled — 2023-2-60-107`, `Md. Arifur Rahman Shihab — 2023-2-60-176`).
 2. **Abstract (Strictly 150–250 words):** One crisp, self-contained paragraph covering: (i) research problem (model robustness under realistic data degradation), (ii) dataset ($13,611$ Dry Bean instances, $16$ geometric attributes, $7$ classes), (iii) methodology (baseline mining + 4-axis stress testing), (iv) headline quantitative findings (exact verified numbers from `metrics_summary.json`), and (v) main conclusion.
 3. **1. Introduction:** Problem background, motivation (why real-world data pipelines degrade via sensor noise, missingness, and scaling drift), why comparative data mining matters beyond accuracy chasing, explicit SRQ1–SRQ4 & RQ1–RQ4, and concise bulleted project contributions.
 4. **2. Dataset Description:** Complete academic attribution (UCI DOI + Koklu & Ozkan 2020), structured metadata table, complete 17-attribute taxonomy table with LaTeX formulas ($R = \frac{4\pi A}{P^2}$, $CO = \frac{E_d}{L}$, $K = \frac{L}{l}$), class balance summary, and critical dataset limitations.
