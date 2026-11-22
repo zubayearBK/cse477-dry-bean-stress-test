@@ -197,7 +197,7 @@ def plot_similarity_distance_comparison(comp_df, summary_metrics, output_prefix=
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_kmeans_sweep(X_std, y_true, k_range=range(2, 11), random_state=42):
@@ -258,7 +258,7 @@ def plot_kmeans_elbow_silhouette(sweep_df, output_prefix="results/figures/fig09_
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_clustering_comparison(X_std, y_true, df_clean, random_state=42):
@@ -375,7 +375,7 @@ def plot_clustering_comparison_pca(X_pca_2d, y_true, km_labels, hier_labels, hie
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def train_and_evaluate_classifiers(X_train, X_test, y_train, y_test, random_state=42):
@@ -489,7 +489,7 @@ def plot_classification_results(models, X_test_std, y_test, class_names, per_cla
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def mine_morphological_association_rules(df_clean, min_support=0.02, min_confidence=0.30):
@@ -535,23 +535,60 @@ def plot_association_rules(car_rules, output_prefix="results/figures/fig12_assoc
     cbar = plt.colorbar(scatter, ax=ax)
     cbar.set_label("Rule Lift", fontsize=10, fontweight="bold")
 
-    top_distinct = car_rules.groupby("consequent_class").head(1)
+    callout_specs = {
+        "DERMASON": dict(xytext=(0.090, 1.030), rad=0.06,  shrinkB=12),
+        "BARBUNYA": dict(xytext=(0.165, 0.965), rad=-0.04, shrinkB=8),
+        "SIRA":     dict(xytext=(0.090, 0.915), rad=0.02,  shrinkB=8),
+        "HOROZ":    dict(xytext=(0.165, 0.865), rad=-0.04, shrinkB=8),
+        "SEKER":    dict(xytext=(0.090, 0.810), rad=-0.04, shrinkB=12),
+        "CALI":     dict(xytext=(0.165, 0.745), rad=-0.04, shrinkB=8),
+    }
+
+    top_distinct = car_rules.groupby("consequent_class").head(1).sort_values(by="confidence", ascending=False)
+    annotations = []
     for _, row in top_distinct.iterrows():
-        ax.annotate(f"{row['consequent_class']}\n(Lift={row['lift']:.1f})",
-                    xy=(row["support"], row["confidence"]),
-                    xytext=(row["support"] + 0.003, row["confidence"] + 0.02),
-                    fontsize=8.5, fontweight="bold",
-                    arrowprops=dict(arrowstyle="->", color="#2c3e50", lw=0.8))
+        c_name = row["consequent_class"]
+        spec = callout_specs.get(c_name, dict(xytext=(row["support"] + 0.05, row["confidence"]), rad=0.0, shrinkB=5))
+        label = f"{c_name} (Lift={row['lift']:.1f}, Conf={row['confidence']:.2f})"
+        txt = ax.annotate(
+            label,
+            xy=(row["support"], row["confidence"]),
+            xytext=spec["xytext"],
+            fontsize=8.5,
+            fontweight="bold",
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="0.4", alpha=0.92),
+            arrowprops=dict(
+                arrowstyle="->",
+                color="0.3",
+                lw=0.9,
+                connectionstyle=f"arc3,rad={spec['rad']}",
+                shrinkB=spec["shrinkB"],
+                mutation_scale=8
+            )
+        )
+        annotations.append((c_name, txt))
 
     ax.set_xlabel("Rule Support", fontsize=10, fontweight="bold")
     ax.set_ylabel("Rule Confidence", fontsize=10, fontweight="bold")
     ax.set_title("Morphological Class Association Rules (Support vs Confidence vs Lift)", fontsize=11, fontweight="bold")
-    ax.set_ylim(0.25, 1.05)
+    ax.set_xlim(0.005, 0.255)
+    ax.set_ylim(0.26, 1.07)
 
     plt.tight_layout()
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    ax_box = ax.get_window_extent(renderer=renderer)
+    patch_boxes = [txt.get_bbox_patch().get_window_extent(renderer=renderer) for _, txt in annotations]
+    for i in range(len(patch_boxes)):
+        for j in range(i + 1, len(patch_boxes)):
+            assert not patch_boxes[i].overlaps(patch_boxes[j]), f"Overlap detected between {annotations[i][0]} and {annotations[j][0]}"
+    for idx, (name, _) in enumerate(annotations):
+        b = patch_boxes[idx]
+        assert ax_box.contains(b.x0, b.y0) and ax_box.contains(b.x1, b.y1), f"Annotation {name} box is outside plot axes!"
+
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_stress_test_missing_data(X_train, X_test, y_train, y_test, X_full, y_full, fractions=[0.0, 0.05, 0.10, 0.20, 0.30], random_state=42):
@@ -667,7 +704,7 @@ def plot_stress_test_missing_data(df_res, output_prefix="results/figures/fig13_r
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_stress_test_outliers(X_train, X_test, y_train, y_test, X_full, y_full, rates=[0.0, 0.05, 0.10, 0.20], random_state=42):
@@ -770,7 +807,7 @@ def plot_stress_test_outliers(df_res, output_prefix="results/figures/fig14_robus
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_stress_test_scaling(X_train, X_test, y_train, y_test, X_full, y_full, random_state=42):
@@ -883,7 +920,7 @@ def plot_stress_test_scaling(df_res, output_prefix="results/figures/fig15_scalin
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def run_stress_test_feature_reduction(X_train, X_test, y_train, y_test, X_full, y_full, selected_8, random_state=42):
@@ -984,7 +1021,7 @@ def plot_stress_test_feature_reduction(df_res, output_prefix="results/figures/fi
     plt.tight_layout()
     plt.savefig(f"{output_prefix}.png", dpi=300, bbox_inches="tight")
     plt.savefig(f"{output_prefix}.pdf", bbox_inches="tight")
-    plt.show()
+    plt.close()
 
 
 def build_master_comparative_table(clf_comp, miss_df, out_df, scal_df, feat_df):
