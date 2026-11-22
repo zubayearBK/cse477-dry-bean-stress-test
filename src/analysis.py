@@ -851,3 +851,30 @@ def run_pipeline():
 
 if __name__ == "__main__":
     run_pipeline()
+
+try:
+    from src.stress_tests import (
+        analyze_similarity_and_distances,
+        plot_similarity_distance_comparison,
+        run_kmeans_sweep,
+        plot_kmeans_elbow_silhouette,
+        run_clustering_comparison,
+        plot_clustering_comparison_pca,
+        train_and_evaluate_classifiers,
+        plot_classification_results,
+        mine_morphological_association_rules,
+        plot_association_rules,
+        run_stress_test_missing_data,
+        plot_stress_test_missing_data,
+        run_stress_test_outliers,
+        plot_stress_test_outliers,
+        run_stress_test_scaling,
+        plot_stress_test_scaling,
+        run_stress_test_feature_reduction,
+        plot_stress_test_feature_reduction,
+        build_master_comparative_table,
+        merge_metrics_summary,
+    )
+except ImportError:
+    pass
+

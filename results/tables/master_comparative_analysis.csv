@@ -1,0 +1,5 @@
+Model_Algorithm,Paradigm,Clean_Baseline_Macro_F1,Drop_at_30pct_MCAR,Drop_at_20pct_Outliers,Raw_Scale_Distortion_Drop,Pruned_8Feat_Diff,Primary_Vulnerability,Optimal_Stress_Condition
+Decision Tree (Tuned),Axis-Aligned Tree,0.9210761344847819,0.0898787692426758,0.01102241264394066,0.0013282219957967412,-0.006705415619627786,High variance under deep trees,"Scale-invariant, robust to monotonic noise"
+k-Nearest Neighbors (k=7),Instance-Based Distance,0.9236535363242628,0.055971800793577664,-0.0009059214392108661,0.1985423854510331,0.00012571377031145303,"Extreme raw scale disparity, distance hijacking",Z-score or RobustScaler with low outliers
+Gaussian Naive Bayes,Probabilistic Density,0.9072201604443578,0.058497148057978565,0.07471505284132818,0.14032482047035966,0.013549988615723652,Collinearity violating conditional independence,De-correlated features (PCA or pruned 8-feature subset)
+Rule-Based Classifier,Interpretable IF-THEN Rules,0.752035360372855,0.11253637290124519,0.0042951316037895815,0.0,0.00064058652793475,Underfitting overlapping varieties,High-interpretability human audit requirements
