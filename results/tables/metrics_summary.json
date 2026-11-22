@@ -1,0 +1,619 @@
+{
+    "metadata": {
+        "dataset_name": "Dry Bean Dataset",
+        "uci_id": 602,
+        "doi": "https://doi.org/10.24432/C50S4B",
+        "primary_paper": "Koklu & Ozkan (2020), Computers and Electronics in Agriculture, 174, 105507",
+        "raw_record_count": 13611,
+        "cleaned_record_count": 13543,
+        "feature_count_total": 17,
+        "numerical_features_count": 16,
+        "categorical_features_count": 1,
+        "target_classes_count": 7,
+        "target_classes": [
+            "DERMASON",
+            "SIRA",
+            "SEKER",
+            "HOROZ",
+            "CALI",
+            "BARBUNYA",
+            "BOMBAY"
+        ]
+    },
+    "data_quality": {
+        "missing_values_count": 0,
+        "duplicate_groups_total_rows": 136,
+        "duplicate_rows_dropped": 68,
+        "duplicate_class_breakdown": {
+            "HOROZ": 68
+        },
+        "cleaned_instances": 13543,
+        "domain_checks_all_valid": true,
+        "bombay_total_instances": 522,
+        "bombay_area_outliers_count": 522,
+        "bombay_area_outliers_pct": 100.0,
+        "area_outliers_total": 551,
+        "area_outliers_by_class": {
+            "BOMBAY": 522,
+            "CALI": 24,
+            "BARBUNYA": 5
+        },
+        "range_ratio_area_to_shapefactor2": 75527534.01,
+        "solidity_variance": 2.1623109363545658e-05,
+        "shapefactor4_variance": 1.889439268981831e-05
+    },
+    "class_distribution": [
+        {
+            "Class": "DERMASON",
+            "Count": 3546,
+            "Percentage": 26.18,
+            "Ratio_to_Minority": 6.79
+        },
+        {
+            "Class": "SIRA",
+            "Count": 2636,
+            "Percentage": 19.46,
+            "Ratio_to_Minority": 5.05
+        },
+        {
+            "Class": "SEKER",
+            "Count": 2027,
+            "Percentage": 14.97,
+            "Ratio_to_Minority": 3.88
+        },
+        {
+            "Class": "HOROZ",
+            "Count": 1860,
+            "Percentage": 13.73,
+            "Ratio_to_Minority": 3.56
+        },
+        {
+            "Class": "CALI",
+            "Count": 1630,
+            "Percentage": 12.04,
+            "Ratio_to_Minority": 3.12
+        },
+        {
+            "Class": "BARBUNYA",
+            "Count": 1322,
+            "Percentage": 9.76,
+            "Ratio_to_Minority": 2.53
+        },
+        {
+            "Class": "BOMBAY",
+            "Count": 522,
+            "Percentage": 3.85,
+            "Ratio_to_Minority": 1.0
+        }
+    ],
+    "scaling_disparity": {
+        "raw_max_range": 242577.0,
+        "raw_min_range": 0.0031008029464183904,
+        "raw_scale_gap_ratio": 78230382.32
+    },
+    "multicollinearity": {
+        "high_correlation_pairs_count_ge_90": 21,
+        "high_correlation_pairs_ge_90": [
+            {
+                "Feature_1": "Area",
+                "Feature_2": "ConvexArea",
+                "Pearson_r": 0.9999,
+                "Abs_r": 0.9999,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Compactness",
+                "Feature_2": "ShapeFactor3",
+                "Pearson_r": 0.9987,
+                "Abs_r": 0.9987,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Perimeter",
+                "Feature_2": "EquivDiameter",
+                "Pearson_r": 0.9915,
+                "Abs_r": 0.9915,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "AspectRation",
+                "Feature_2": "Compactness",
+                "Pearson_r": -0.9876,
+                "Abs_r": 0.9876,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "ConvexArea",
+                "Feature_2": "EquivDiameter",
+                "Pearson_r": 0.9853,
+                "Abs_r": 0.9853,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Area",
+                "Feature_2": "EquivDiameter",
+                "Pearson_r": 0.985,
+                "Abs_r": 0.985,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Eccentricity",
+                "Feature_2": "ShapeFactor3",
+                "Pearson_r": -0.9811,
+                "Abs_r": 0.9811,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "AspectRation",
+                "Feature_2": "ShapeFactor3",
+                "Pearson_r": -0.9785,
+                "Abs_r": 0.9785,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Perimeter",
+                "Feature_2": "MajorAxisLength",
+                "Pearson_r": 0.9776,
+                "Abs_r": 0.9776,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Eccentricity",
+                "Feature_2": "Compactness",
+                "Pearson_r": -0.9703,
+                "Abs_r": 0.9703,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Perimeter",
+                "Feature_2": "ConvexArea",
+                "Pearson_r": 0.9679,
+                "Abs_r": 0.9679,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Area",
+                "Feature_2": "Perimeter",
+                "Pearson_r": 0.9669,
+                "Abs_r": 0.9669,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "MajorAxisLength",
+                "Feature_2": "EquivDiameter",
+                "Pearson_r": 0.9623,
+                "Abs_r": 0.9623,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "Area",
+                "Feature_2": "MinorAxisLength",
+                "Pearson_r": 0.952,
+                "Abs_r": 0.952,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "MinorAxisLength",
+                "Feature_2": "ConvexArea",
+                "Pearson_r": 0.9518,
+                "Abs_r": 0.9518,
+                "Collinearity_Status": "Extreme (|r| >= 0.95)"
+            },
+            {
+                "Feature_1": "MinorAxisLength",
+                "Feature_2": "EquivDiameter",
+                "Pearson_r": 0.9492,
+                "Abs_r": 0.9492,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            },
+            {
+                "Feature_1": "MinorAxisLength",
+                "Feature_2": "ShapeFactor1",
+                "Pearson_r": -0.9472,
+                "Abs_r": 0.9472,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            },
+            {
+                "Feature_1": "MajorAxisLength",
+                "Feature_2": "ConvexArea",
+                "Pearson_r": 0.9334,
+                "Abs_r": 0.9334,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            },
+            {
+                "Feature_1": "Area",
+                "Feature_2": "MajorAxisLength",
+                "Pearson_r": 0.9326,
+                "Abs_r": 0.9326,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            },
+            {
+                "Feature_1": "AspectRation",
+                "Feature_2": "Eccentricity",
+                "Pearson_r": 0.9242,
+                "Abs_r": 0.9242,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            },
+            {
+                "Feature_1": "Perimeter",
+                "Feature_2": "MinorAxisLength",
+                "Pearson_r": 0.9143,
+                "Abs_r": 0.9143,
+                "Collinearity_Status": "Severe (|r| >= 0.90)"
+            }
+        ],
+        "highest_vif_feature": "EquivDiameter",
+        "highest_vif_value": 317671.59,
+        "vif_table": [
+            {
+                "Feature": "EquivDiameter",
+                "VIF": 317671.59
+            },
+            {
+                "Feature": "Compactness",
+                "VIF": 275722.88
+            },
+            {
+                "Feature": "ShapeFactor3",
+                "VIF": 199791.01
+            },
+            {
+                "Feature": "MajorAxisLength",
+                "VIF": 88521.08
+            },
+            {
+                "Feature": "Area",
+                "VIF": 81784.07
+            },
+            {
+                "Feature": "ConvexArea",
+                "VIF": 78927.31
+            },
+            {
+                "Feature": "MinorAxisLength",
+                "VIF": 78064.6
+            },
+            {
+                "Feature": "AspectRation",
+                "VIF": 13800.55
+            },
+            {
+                "Feature": "Perimeter",
+                "VIF": 3576.33
+            },
+            {
+                "Feature": "ShapeFactor2",
+                "VIF": 1242.07
+            },
+            {
+                "Feature": "Eccentricity",
+                "VIF": 1180.05
+            },
+            {
+                "Feature": "ShapeFactor1",
+                "VIF": 608.6
+            },
+            {
+                "Feature": "roundness",
+                "VIF": 103.3
+            },
+            {
+                "Feature": "ShapeFactor4",
+                "VIF": 66.68
+            },
+            {
+                "Feature": "Solidity",
+                "VIF": 14.02
+            },
+            {
+                "Feature": "Extent",
+                "VIF": 1.24
+            }
+        ]
+    },
+    "feature_selection": {
+        "selected_subset_8": [
+            "Area",
+            "AspectRation",
+            "Extent",
+            "Solidity",
+            "roundness",
+            "ShapeFactor1",
+            "ShapeFactor2",
+            "ShapeFactor4"
+        ],
+        "anova_top_3": [
+            "Area",
+            "ConvexArea",
+            "EquivDiameter"
+        ],
+        "mi_top_3": [
+            "Perimeter",
+            "ConvexArea",
+            "Area"
+        ],
+        "feature_ranking_table": [
+            {
+                "Feature": "Area",
+                "ANOVA_F_statistic": 29014.84,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 1.0353,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 1,
+                "MI_Rank": 3
+            },
+            {
+                "Feature": "ConvexArea",
+                "ANOVA_F_statistic": 28960.45,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 1.038,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 2,
+                "MI_Rank": 2
+            },
+            {
+                "Feature": "EquivDiameter",
+                "ANOVA_F_statistic": 25488.18,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 1.0347,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 3,
+                "MI_Rank": 4
+            },
+            {
+                "Feature": "Perimeter",
+                "ANOVA_F_statistic": 24327.02,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 1.0551,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 4,
+                "MI_Rank": 1
+            },
+            {
+                "Feature": "MinorAxisLength",
+                "ANOVA_F_statistic": 22431.93,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.9275,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 5,
+                "MI_Rank": 8
+            },
+            {
+                "Feature": "MajorAxisLength",
+                "ANOVA_F_statistic": 21631.47,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.9934,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 6,
+                "MI_Rank": 5
+            },
+            {
+                "Feature": "ShapeFactor2",
+                "ANOVA_F_statistic": 12203.84,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.9534,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 7,
+                "MI_Rank": 6
+            },
+            {
+                "Feature": "ShapeFactor1",
+                "ANOVA_F_statistic": 12101.1,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.9294,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 8,
+                "MI_Rank": 7
+            },
+            {
+                "Feature": "AspectRation",
+                "ANOVA_F_statistic": 10198.17,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.8145,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 9,
+                "MI_Rank": 11
+            },
+            {
+                "Feature": "Compactness",
+                "ANOVA_F_statistic": 9991.05,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.8305,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 10,
+                "MI_Rank": 9
+            },
+            {
+                "Feature": "ShapeFactor3",
+                "ANOVA_F_statistic": 9734.66,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.8305,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 11,
+                "MI_Rank": 9
+            },
+            {
+                "Feature": "Eccentricity",
+                "ANOVA_F_statistic": 8159.78,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.8145,
+                "Retained_in_Correlation_Pruning_r90": "Dropped (Collinear)",
+                "ANOVA_Rank": 12,
+                "MI_Rank": 11
+            },
+            {
+                "Feature": "roundness",
+                "ANOVA_F_statistic": 6069.85,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.7955,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 13,
+                "MI_Rank": 13
+            },
+            {
+                "Feature": "ShapeFactor4",
+                "ANOVA_F_statistic": 1263.08,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.363,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 14,
+                "MI_Rank": 14
+            },
+            {
+                "Feature": "Solidity",
+                "ANOVA_F_statistic": 633.4,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.2306,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 15,
+                "MI_Rank": 15
+            },
+            {
+                "Feature": "Extent",
+                "ANOVA_F_statistic": 427.25,
+                "ANOVA_p_value": 0.0,
+                "Mutual_Information": 0.1972,
+                "Retained_in_Correlation_Pruning_r90": "Kept",
+                "ANOVA_Rank": 16,
+                "MI_Rank": 16
+            }
+        ]
+    },
+    "pca": {
+        "pc1_explained_variance_pct": 55.55,
+        "pc2_explained_variance_pct": 26.36,
+        "pc1_pc2_cumulative_variance_pct": 81.91,
+        "variance_thresholds": {
+            "80%": {
+                "components_needed": 2,
+                "variance_retained": 0.8190759716525311
+            },
+            "90%": {
+                "components_needed": 4,
+                "variance_retained": 0.9500043900321756
+            },
+            "95%": {
+                "components_needed": 4,
+                "variance_retained": 0.9500043900321756
+            },
+            "99%": {
+                "components_needed": 7,
+                "variance_retained": 0.9960393709634787
+            }
+        },
+        "pca_explained_variance_table": [
+            {
+                "Component": "PC1",
+                "Explained_Variance_Ratio": 0.555468,
+                "Cumulative_Variance_Ratio": 0.555468,
+                "Explained_Variance_Pct": 55.55,
+                "Cumulative_Variance_Pct": 55.55
+            },
+            {
+                "Component": "PC2",
+                "Explained_Variance_Ratio": 0.263608,
+                "Cumulative_Variance_Ratio": 0.819076,
+                "Explained_Variance_Pct": 26.36,
+                "Cumulative_Variance_Pct": 81.91
+            },
+            {
+                "Component": "PC3",
+                "Explained_Variance_Ratio": 0.079844,
+                "Cumulative_Variance_Ratio": 0.89892,
+                "Explained_Variance_Pct": 7.98,
+                "Cumulative_Variance_Pct": 89.89
+            },
+            {
+                "Component": "PC4",
+                "Explained_Variance_Ratio": 0.051084,
+                "Cumulative_Variance_Ratio": 0.950004,
+                "Explained_Variance_Pct": 5.11,
+                "Cumulative_Variance_Pct": 95.0
+            },
+            {
+                "Component": "PC5",
+                "Explained_Variance_Ratio": 0.027531,
+                "Cumulative_Variance_Ratio": 0.977535,
+                "Explained_Variance_Pct": 2.75,
+                "Cumulative_Variance_Pct": 97.75
+            },
+            {
+                "Component": "PC6",
+                "Explained_Variance_Ratio": 0.011522,
+                "Cumulative_Variance_Ratio": 0.989057,
+                "Explained_Variance_Pct": 1.15,
+                "Cumulative_Variance_Pct": 98.91
+            },
+            {
+                "Component": "PC7",
+                "Explained_Variance_Ratio": 0.006982,
+                "Cumulative_Variance_Ratio": 0.996039,
+                "Explained_Variance_Pct": 0.7,
+                "Cumulative_Variance_Pct": 99.6
+            },
+            {
+                "Component": "PC8",
+                "Explained_Variance_Ratio": 0.00326,
+                "Cumulative_Variance_Ratio": 0.999299,
+                "Explained_Variance_Pct": 0.33,
+                "Cumulative_Variance_Pct": 99.93
+            },
+            {
+                "Component": "PC9",
+                "Explained_Variance_Ratio": 0.000515,
+                "Cumulative_Variance_Ratio": 0.999814,
+                "Explained_Variance_Pct": 0.05,
+                "Cumulative_Variance_Pct": 99.98
+            },
+            {
+                "Component": "PC10",
+                "Explained_Variance_Ratio": 9.1e-05,
+                "Cumulative_Variance_Ratio": 0.999905,
+                "Explained_Variance_Pct": 0.01,
+                "Cumulative_Variance_Pct": 99.99
+            },
+            {
+                "Component": "PC11",
+                "Explained_Variance_Ratio": 6.6e-05,
+                "Cumulative_Variance_Ratio": 0.999971,
+                "Explained_Variance_Pct": 0.01,
+                "Cumulative_Variance_Pct": 100.0
+            },
+            {
+                "Component": "PC12",
+                "Explained_Variance_Ratio": 1.8e-05,
+                "Cumulative_Variance_Ratio": 0.99999,
+                "Explained_Variance_Pct": 0.0,
+                "Cumulative_Variance_Pct": 100.0
+            },
+            {
+                "Component": "PC13",
+                "Explained_Variance_Ratio": 9e-06,
+                "Cumulative_Variance_Ratio": 0.999999,
+                "Explained_Variance_Pct": 0.0,
+                "Cumulative_Variance_Pct": 100.0
+            },
+            {
+                "Component": "PC14",
+                "Explained_Variance_Ratio": 1e-06,
+                "Cumulative_Variance_Ratio": 1.0,
+                "Explained_Variance_Pct": 0.0,
+                "Cumulative_Variance_Pct": 100.0
+            },
+            {
+                "Component": "PC15",
+                "Explained_Variance_Ratio": 0.0,
+                "Cumulative_Variance_Ratio": 1.0,
+                "Explained_Variance_Pct": 0.0,
+                "Cumulative_Variance_Pct": 100.0
+            },
+            {
+                "Component": "PC16",
+                "Explained_Variance_Ratio": 0.0,
+                "Cumulative_Variance_Ratio": 1.0,
+                "Explained_Variance_Pct": 0.0,
+                "Cumulative_Variance_Pct": 100.0
+            }
+        ]
+    }
+}
